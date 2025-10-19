@@ -4,7 +4,7 @@ import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 text-base-content">
+  <div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 text-base-content transition-colors duration-300">
     <Header />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">

@@ -1,5 +1,5 @@
 {
-  "name": "techcorp-website",
+  "name": "guanwang2",
   "private": false,
   "version": "1.0.0",
   "type": "module",
@@ -14,12 +14,11 @@
     "tech-company"
   ],
   "author": {
-    "name": "yang1145",
+    "name": "yang1145"
   },
   "license": "MIT",
   "repository": {
-    "type": "git",
-  },
+    "type": "git"
   },
   "scripts": {
     "dev": "vite",
@@ -47,10 +46,5 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  }
 }

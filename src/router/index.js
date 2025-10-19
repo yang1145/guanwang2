@@ -5,6 +5,7 @@ import News from '../views/News.vue'
 import Contact from '../views/Contact.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import NewsDetail from '../views/NewsDetail.vue'
+import About from '../views/About.vue'
 
 // 404页面组件
 const NotFound = {
@@ -61,6 +62,14 @@ const routes = [
       title: '新闻详情 - TechCorp科技有限公司'
     },
     props: true
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+    meta: {
+      title: '关于我们 - TechCorp科技有限公司'
+    }
   },
   {
     path: '/contact',
