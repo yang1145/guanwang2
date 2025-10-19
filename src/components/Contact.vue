@@ -31,7 +31,15 @@
                 <label class="block mb-2">消息</label>
                 <textarea placeholder="请输入您的消息" class="textarea textarea-bordered w-full" rows="4"></textarea>
               </div>
-              <button class="btn btn-primary text-primary-content rounded-full w-full">发送消息</button>
+              <button type="button" @click="showSuccessMessage = true" class="btn btn-primary text-primary-content rounded-full w-full">发送消息</button>
+              
+              <!-- 成功提示 -->
+              <div v-if="showSuccessMessage" class="alert alert-success shadow-lg mt-6">
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>消息已成功发送！我们会尽快与您联系。</span>
+                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -85,6 +93,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+const showSuccessMessage = ref(false)
 </script>
 
 <style scoped>

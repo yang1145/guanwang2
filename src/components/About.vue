@@ -1,5 +1,5 @@
 <template>
-  <div class="py-16">
+  <div class="py-16" id="about">
     <div class="container mx-auto px-4">
       <div class="flex flex-col lg:flex-row items-center gap-12">
         <div class="lg:w-1/2">
@@ -53,9 +53,9 @@
               <span>持续发展</span>
             </div>
           </div>
-          <button class="btn btn-primary text-primary-content rounded-full">
+          <router-link to="/products" class="btn btn-primary text-primary-content rounded-full">
             查看更多
-          </button>
+          </router-link>
         </div>
       </div>
     </div>

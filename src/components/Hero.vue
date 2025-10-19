@@ -10,12 +10,12 @@
           提升业务效率，创造更大价值。
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <button class="btn btn-primary text-primary-content rounded-full px-8">
+          <router-link to="/products" class="btn btn-primary text-primary-content rounded-full px-8">
             立即体验
-          </button>
-          <button class="btn btn-outline rounded-full px-8">
+          </router-link>
+          <router-link to="/contact" class="btn btn-outline rounded-full px-8">
             了解更多
-          </button>
+          </router-link>
         </div>
         <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="bg-base-200 p-4 rounded-xl shadow">

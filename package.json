@@ -1,23 +1,56 @@
 {
-  "name": "guanwang2-frontend",
-  "private": true,
-  "version": "0.0.0",
+  "name": "techcorp-website",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
-  "description": "科技企业官网前端项目",
+  "description": "科技企业官网前端项目 - 基于Vue 3、Vite、Tailwind CSS和DaisyUI构建",
+  "keywords": [
+    "vue3",
+    "vite",
+    "tailwindcss",
+    "daisyui",
+    "website",
+    "corporate-website",
+    "tech-company"
+  ],
+  "author": {
+    "name": "yang1145",
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+  },
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "vite preview",
+    "lint": "eslint src --ext .js,.vue",
+    "lint:fix": "eslint src --ext .js,.vue --fix",
+    "format": "prettier --write src/"
   },
   "dependencies": {
+    "daisyui": "^4.12.10",
     "vue": "^3.5.12",
-    "daisyui": "^4.12.10"
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.20.1",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.11"
-  }
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

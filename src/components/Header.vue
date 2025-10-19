@@ -2,20 +2,19 @@
   <header class="navbar bg-base-100 shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-4">
       <div class="flex-1">
-        <a class="btn btn-ghost text-xl font-bold">
+        <router-link to="/" class="btn btn-ghost text-xl font-bold">
           <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             TechCorp
           </span>
-        </a>
+        </router-link>
       </div>
       <div class="flex-none hidden lg:block">
         <ul class="menu menu-horizontal px-1">
-          <li><a class="rounded-lg hover:bg-base-200">首页</a></li>
-          <li><a class="rounded-lg hover:bg-base-200">产品</a></li>
-          <li><a class="rounded-lg hover:bg-base-200">解决方案</a></li>
-          <li><a class="rounded-lg hover:bg-base-200">关于我们</a></li>
-          <li><a class="rounded-lg hover:bg-base-200">新闻资讯</a></li>
-          <li><a class="rounded-lg hover:bg-base-200">联系我们</a></li>
+          <li><router-link to="/" class="rounded-lg hover:bg-base-200">首页</router-link></li>
+          <li><router-link to="/products" class="rounded-lg hover:bg-base-200">产品</router-link></li>
+          <li><router-link to="/news" class="rounded-lg hover:bg-base-200">新闻资讯</router-link></li>
+          <li><router-link to="/#about" class="rounded-lg hover:bg-base-200">关于我们</router-link></li>
+          <li><router-link to="/contact" class="rounded-lg hover:bg-base-200">联系我们</router-link></li>
         </ul>
       </div>
       <div class="flex-none">
@@ -26,12 +25,11 @@
             </svg>
           </div>
           <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>首页</a></li>
-            <li><a>产品</a></li>
-            <li><a>解决方案</a></li>
-            <li><a>关于我们</a></li>
-            <li><a>新闻资讯</a></li>
-            <li><a>联系我们</a></li>
+            <li><router-link to="/">首页</router-link></li>
+            <li><router-link to="/products">产品</router-link></li>
+            <li><router-link to="/news">新闻资讯</router-link></li>
+            <li><router-link to="/#about">关于我们</router-link></li>
+            <li><router-link to="/contact">联系我们</router-link></li>
           </ul>
         </div>
         <div class="hidden lg:block ml-2">

@@ -23,7 +23,7 @@
               帮助企业做出更明智的决策。
             </p>
             <div class="card-actions justify-end mt-4">
-              <button class="btn btn-primary btn-sm rounded-full">了解更多</button>
+              <router-link to="/products" class="btn btn-primary btn-sm rounded-full">了解更多</router-link>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
               提升团队协作效率。
             </p>
             <div class="card-actions justify-end mt-4">
-              <button class="btn btn-secondary btn-sm rounded-full">了解更多</button>
+              <router-link to="/products" class="btn btn-secondary btn-sm rounded-full">了解更多</router-link>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@
               保障企业信息安全。
             </p>
             <div class="card-actions justify-end mt-4">
-              <button class="btn btn-accent btn-sm rounded-full">了解更多</button>
+              <router-link to="/products" class="btn btn-accent btn-sm rounded-full">了解更多</router-link>
             </div>
           </div>
         </div>
