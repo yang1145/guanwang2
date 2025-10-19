@@ -32,17 +32,17 @@
         <div class="lg:hidden flex items-center">
           <ThemeToggle />
           <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle ml-2 hover:bg-base-200/30 transition-all duration-300">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle ml-2 hover:bg-base-200/30 transition-all duration-300 menu-btn">
               <svg xmlns="http://www.w.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow backdrop-blur-lg bg-base-100/80 rounded-box w-52 border border-base-200/30">
-              <li><router-link to="/" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2">首页</router-link></li>
-              <li><router-link to="/products" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2">产品</router-link></li>
-              <li><router-link to="/news" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2">新闻资讯</router-link></li>
-              <li><router-link to="/about" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2">关于我们</router-link></li>
-              <li><router-link to="/contact" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2">联系我们</router-link></li>
+              <li><router-link to="/" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2 menu-item">首页</router-link></li>
+              <li><router-link to="/products" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2 menu-item">产品</router-link></li>
+              <li><router-link to="/news" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2 menu-item">新闻资讯</router-link></li>
+              <li><router-link to="/about" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2 menu-item">关于我们</router-link></li>
+              <li><router-link to="/contact" class="rounded-lg text-base-content hover:bg-base-200/30 transition-all duration-300 px-4 py-2 menu-item">联系我们</router-link></li>
             </ul>
           </div>
         </div>
@@ -173,5 +173,32 @@ onBeforeUnmount(() => {
 
 .lang-btn:hover::before {
   opacity: 1;
+}
+
+/* 菜单按钮悬停效果 */
+.menu-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 下拉菜单项 */
+.menu-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, hsl(var(--bc)/0.05), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.menu-item:hover::before {
+  transform: translateX(100%);
 }
 </style>
