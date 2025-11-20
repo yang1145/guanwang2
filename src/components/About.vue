@@ -11,16 +11,7 @@
       <div class="flex flex-col lg:flex-row items-center gap-12 mb-20">
         <div class="lg:w-1/2">
           <div class="relative">
-            <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl w-full h-96 flex items-center justify-center">
-              <div class="text-center text-white p-8">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto mb-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                <h3 class="text-2xl font-bold">TechCorp 科技有限公司</h3>
-                <p class="mt-2 opacity-90">引领科技创新，驱动未来变革</p>
-              </div>
-            </div>
-            <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-accent to-secondary rounded-2xl w-64 h-64 opacity-80"></div>
+            <img src="/info.png" alt="公司信息" class="rounded-2xl w-full h-96 object-cover">
           </div>
         </div>
         <div class="lg:w-1/2">

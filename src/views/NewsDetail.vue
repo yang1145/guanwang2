@@ -160,7 +160,7 @@ const fetchNewsDetail = async (id) => {
   
   try {
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
-    const response = await fetch(`${apiUrl}/api/news/${id})
+    const response = await fetch(`${apiUrl}/api/news/${id}`)
     
     if (!response.ok) {
       if (response.status === 404) {
