@@ -13,42 +13,75 @@
         <div class="card bg-base-200 shadow-xl">
           <div class="card-body">
             <h2 class="card-title text-2xl mb-6">发送消息</h2>
-            <form class="space-y-6">
+            <form @submit.prevent="submitForm" class="space-y-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="form-control">
                   <label class="label">
-                    <span class="label-text">姓名</span>
+                    <span class="label-text">姓名 *</span>
                   </label>
-                  <input type="text" placeholder="您的姓名" class="input input-bordered w-full">
+                  <input 
+                    v-model="form.name" 
+                    type="text" 
+                    placeholder="您的姓名" 
+                    class="input input-bordered w-full"
+                    :class="{ 'input-error': errors.name }"
+                    required
+                  >
+                  <label class="label" v-if="errors.name">
+                    <span class="label-text-alt text-error">{{ errors.name }}</span>
+                  </label>
                 </div>
                 <div class="form-control">
                   <label class="label">
                     <span class="label-text">公司</span>
                   </label>
-                  <input type="text" placeholder="您的公司" class="input input-bordered w-full">
+                  <input 
+                    v-model="form.company" 
+                    type="text" 
+                    placeholder="您的公司" 
+                    class="input input-bordered w-full"
+                  >
                 </div>
               </div>
               
               <div class="form-control">
                 <label class="label">
-                  <span class="label-text">邮箱</span>
+                  <span class="label-text">邮箱 *</span>
                 </label>
-                <input type="email" placeholder="您的邮箱" class="input input-bordered w-full">
+                <input 
+                  v-model="form.email" 
+                  type="email" 
+                  placeholder="您的邮箱" 
+                  class="input input-bordered w-full"
+                  :class="{ 'input-error': errors.email }"
+                  required
+                >
+                <label class="label" v-if="errors.email">
+                  <span class="label-text-alt text-error">{{ errors.email }}</span>
+                </label>
               </div>
               
               <div class="form-control">
                 <label class="label">
                   <span class="label-text">电话</span>
                 </label>
-                <input type="tel" placeholder="您的电话" class="input input-bordered w-full">
+                <input 
+                  v-model="form.phone" 
+                  type="tel" 
+                  placeholder="您的电话" 
+                  class="input input-bordered w-full"
+                >
               </div>
               
               <div class="form-control">
                 <label class="label">
                   <span class="label-text">主题</span>
                 </label>
-                <select class="select select-bordered w-full">
-                  <option disabled selected>选择主题</option>
+                <select 
+                  v-model="form.subject" 
+                  class="select select-bordered w-full"
+                >
+                  <option disabled value="">选择主题</option>
                   <option>产品咨询</option>
                   <option>技术支持</option>
                   <option>商务合作</option>
@@ -59,20 +92,60 @@
               
               <div class="form-control">
                 <label class="label">
-                  <span class="label-text">消息</span>
+                  <span class="label-text">消息 *</span>
                 </label>
-                <textarea placeholder="请输入您的消息" class="textarea textarea-bordered w-full" rows="4"></textarea>
+                <textarea 
+                  v-model="form.message" 
+                  placeholder="请输入您的消息" 
+                  class="textarea textarea-bordered w-full" 
+                  rows="4"
+                  :class="{ 'textarea-error': errors.message }"
+                  required
+                ></textarea>
+                <label class="label" v-if="errors.message">
+                  <span class="label-text-alt text-error">{{ errors.message }}</span>
+                </label>
               </div>
               
               <div class="form-control">
                 <label class="label cursor-pointer justify-start gap-3">
-                  <input type="checkbox" class="checkbox">
-                  <span class="label-text">我同意处理我的个人数据以回复我的请求</span>
+                  <input 
+                    v-model="form.agree" 
+                    type="checkbox" 
+                    class="checkbox"
+                    :class="{ 'checkbox-error': errors.agree }"
+                    required
+                  >
+                  <span class="label-text">我同意处理我的个人数据以回复我的请求 *</span>
+                </label>
+                <label class="label" v-if="errors.agree">
+                  <span class="label-text-alt text-error">{{ errors.agree }}</span>
                 </label>
               </div>
               
               <div class="card-actions justify-end">
-                <button class="btn btn-primary text-primary-content rounded-full px-8">发送消息</button>
+                <button 
+                  type="submit" 
+                  class="btn btn-primary text-primary-content rounded-full px-8"
+                  :class="{ 'loading': isSubmitting }"
+                  :disabled="isSubmitting"
+                >
+                  {{ isSubmitting ? '发送中...' : '发送消息' }}
+                </button>
+              </div>
+              
+              <div v-if="submitStatus === 'success'" class="alert alert-success shadow-lg">
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>您的消息已成功发送！我们会尽快与您联系。</span>
+                </div>
+              </div>
+              
+              <div v-if="submitStatus === 'error'" class="alert alert-error shadow-lg">
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>发送消息时出错，请稍后再试。</span>
+                </div>
               </div>
             </form>
           </div>
@@ -195,6 +268,100 @@
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue'
+
+const form = reactive({
+  name: '',
+  company: '',
+  email: '',
+  phone: '',
+  subject: '',
+  message: '',
+  agree: false
+})
+
+const errors = reactive({})
+const isSubmitting = ref(false)
+const submitStatus = ref('')
+
+// 表单验证函数
+const validateForm = () => {
+  // 清除之前的错误
+  Object.keys(errors).forEach(key => {
+    delete errors[key]
+  })
+  
+  // 验证必填字段
+  if (!form.name.trim()) {
+    errors.name = '请输入您的姓名'
+  }
+  
+  if (!form.email.trim()) {
+    errors.email = '请输入您的邮箱'
+  } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+    errors.email = '请输入有效的邮箱地址'
+  }
+  
+  if (!form.message.trim()) {
+    errors.message = '请输入您的消息'
+  }
+  
+  if (!form.agree) {
+    errors.agree = '请同意处理您的个人数据'
+  }
+  
+  // 返回是否有错误
+  return Object.keys(errors).length === 0
+}
+
+// 提交表单
+const submitForm = async () => {
+  if (!validateForm()) {
+    return
+  }
+  
+  isSubmitting.value = true
+  submitStatus.value = ''
+  
+  try {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+    const response = await fetch(`${apiUrl}/api/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        phone: form.phone || undefined,
+        message: form.message
+      })
+    })
+    
+    if (response.ok) {
+      // 成功提交
+      submitStatus.value = 'success'
+      // 重置表单
+      Object.assign(form, {
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        agree: false
+      })
+    } else {
+      // 处理错误响应
+      submitStatus.value = 'error'
+    }
+  } catch (error) {
+    console.error('提交表单时出错:', error)
+    submitStatus.value = 'error'
+  } finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <style scoped>

@@ -10,37 +10,42 @@
         </router-link>
       </div>
       
-      <div class="card bg-base-200 shadow-xl">
+      <!-- 加载状态 -->
+      <div v-if="loading" class="flex justify-center items-center h-64">
+        <div class="loading loading-spinner loading-lg"></div>
+      </div>
+      
+      <!-- 错误状态 -->
+      <div v-else-if="error" class="alert alert-error shadow-lg mb-8">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>加载产品详情时出错: {{ error }}</span>
+        </div>
+      </div>
+      
+      <!-- 产品详情 -->
+      <div v-else-if="product" class="card bg-base-200 shadow-xl">
         <div class="card-body">
           <div class="flex flex-col md:flex-row gap-8">
             <div class="md:w-1/2">
-              <div class="bg-gradient-to-br from-primary to-secondary rounded-xl w-full h-96"></div>
+              <div class="bg-gradient-to-br from-primary to-secondary rounded-xl w-full h-96 flex items-center justify-center">
+                <span class="text-white text-4xl font-bold">{{ product.name.charAt(0) }}</span>
+              </div>
             </div>
             <div class="md:w-1/2">
               <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
               <p class="text-base-content/70 mb-6">{{ product.description }}</p>
               
-              <div class="mb-6">
-                <h2 class="text-xl font-bold mb-3">主要特性</h2>
-                <ul class="list-disc pl-5 space-y-2">
-                  <li v-for="(feature, index) in product.features" :key="index" class="text-base-content/80">
-                    {{ feature }}
-                  </li>
-                </ul>
+              <div class="mb-6" v-if="product.category">
+                <h2 class="text-xl font-bold mb-3">产品类别</h2>
+                <div class="badge badge-primary badge-outline">{{ product.category }}</div>
               </div>
               
               <div class="mb-6">
-                <h2 class="text-xl font-bold mb-3">技术规格</h2>
-                <div class="overflow-x-auto">
-                  <table class="table w-full">
-                    <tbody>
-                      <tr v-for="(spec, key) in product.specs" :key="key">
-                        <td class="font-medium">{{ key }}</td>
-                        <td>{{ spec }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <h2 class="text-xl font-bold mb-3">创建时间</h2>
+                <p>{{ formatDate(product.created_at) }}</p>
               </div>
               
               <div class="flex flex-wrap gap-4">
@@ -55,14 +60,7 @@
             <h2 class="text-2xl font-bold mb-6">产品详情</h2>
             <div class="prose max-w-none">
               <p class="text-base-content/80 mb-4">
-                智能数据分析平台是一个全面的企业级解决方案，旨在帮助企业从海量数据中提取有价值的洞察。
-                通过我们先进的算法和直观的可视化工具，您的团队可以快速做出基于数据的决策。
-              </p>
-              <p class="text-base-content/80 mb-4">
-                该平台支持多种数据源的集成，包括传统数据库、云存储和实时数据流。强大的数据处理引擎可以在短时间内处理TB级别的数据。
-              </p>
-              <p class="text-base-content/80">
-                我们的平台已经通过了严格的安全审计，符合国际数据保护标准，确保您的数据在处理和存储过程中的安全性。
+                {{ product.description || '暂无详细描述' }}
               </p>
             </div>
           </div>
@@ -115,33 +113,53 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const product = ref({
-  name: '智能数据分析平台',
-  description: '实时收集、处理和分析企业数据，提供可视化报表和商业洞察，帮助企业做出更明智的决策。',
-  features: [
-    '实时数据处理和分析',
-    '丰富的可视化图表和报表',
-    '多数据源集成支持',
-    'AI驱动的智能洞察',
-    '灵活的自定义功能',
-    '企业级安全保障'
-  ],
-  specs: {
-    '支持数据源': 'SQL数据库、NoSQL、API、文件等',
-    '处理能力': '每秒处理10万+数据点',
-    '并发用户': '支持1000+并发用户',
-    '部署方式': '云端、本地、混合部署',
-    '安全认证': 'ISO 27001, GDPR合规',
-    '技术支持': '7x24小时专业技术支持'
+const product = ref(null)
+const loading = ref(false)
+const error = ref(null)
+
+// 格式化日期
+const formatDate = (dateString) => {
+  if (!dateString) return '未知'
+  const date = new Date(dateString)
+  return isNaN(date.getTime()) ? '未知' : date.toLocaleDateString('zh-CN')
+}
+
+// 获取产品详情
+const fetchProduct = async (id) => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+    const response = await fetch(`${apiUrl}/api/products/${id})
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('产品不存在')
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+    }
+    
+    const result = await response.json()
+    product.value = result.data
+  } catch (err) {
+    console.error('获取产品详情失败:', err)
+    error.value = err.message || '获取产品详情失败'
+  } finally {
+    loading.value = false
   }
-})
+}
 
 // 实际项目中，这里会根据路由参数从API获取具体产品信息
 onMounted(() => {
-  // 模拟根据路由参数获取产品详情
+  // 根据路由参数获取产品详情
   const productId = route.params.id
-  // 这里可以发送请求获取具体产品信息
-  console.log('Product ID:', productId)
+  if (productId) {
+    fetchProduct(productId)
+  } else {
+    error.value = '无效的产品ID'
+  }
 })
 </script>
 

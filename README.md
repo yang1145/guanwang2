@@ -116,6 +116,20 @@ src/
 
 DaisyUI 提供了丰富的组件和主题支持，项目默认启用了 light 和 dark 主题。
 
+### 环境变量配置
+
+项目支持通过环境变量配置后端 API 地址：
+
+1. 复制 [.env.example](file:///d:/documents/code/guanwang2/.env.example) 文件并重命名为 `.env`
+2. 修改 `VITE_API_BASE_URL` 的值为你需要的后端地址
+
+例如：
+```bash
+VITE_API_BASE_URL=https://api.yourdomain.com
+```
+
+如果没有设置环境变量，系统会默认使用 `http://localhost:3001` 作为后端地址。
+
 ## 浏览器支持
 
 - 最新的 Chrome, Firefox, Safari, Edge

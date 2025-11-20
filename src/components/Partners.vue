@@ -8,6 +8,8 @@
         </p>
       </div>
 
+      <!-- 在实际项目中，合作伙伴的logo应该从后端获取 -->
+      <!-- 由于API文档中没有提供相关接口，我们使用占位符 -->
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 items-center">
         <div class="flex justify-center">
           <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center text-transparent">
@@ -95,6 +97,8 @@
 </template>
 
 <script setup>
+// 在实际项目中，合作伙伴数据应该从后端获取
+// 由于API文档中没有提供相关接口，我们使用静态内容
 </script>
 
 <style scoped>

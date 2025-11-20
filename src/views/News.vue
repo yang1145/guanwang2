@@ -11,76 +11,61 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2">
           <div class="space-y-8">
-            <!-- 新闻卡片1 -->
-            <div class="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow">
-              <figure class="px-4 pt-4">
-                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl w-full h-64"></div>
-              </figure>
-              <div class="card-body">
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <div class="badge badge-primary">产品发布</div>
-                  <div class="badge badge-outline">2025-10-15</div>
-                </div>
-                <h2 class="card-title">全新智能数据分析平台V3.0正式发布</h2>
-                <p class="text-base-content/70">
-                  我们很高兴地宣布，全新智能数据分析平台V3.0正式发布。新版本引入了增强的AI分析功能、
-                  更直观的可视化界面以及与主流云平台的深度集成，帮助企业更高效地挖掘数据价值。
-                </p>
-                <div class="card-actions justify-end mt-4">
-                  <router-link to="/news/detail/1" class="btn btn-primary btn-sm rounded-full">阅读更多</router-link>
-                </div>
+            <!-- 加载状态 -->
+            <div v-if="loading" class="flex justify-center items-center h-32">
+              <div class="loading loading-spinner loading-lg"></div>
+            </div>
+
+            <!-- 错误状态 -->
+            <div v-else-if="error" class="alert alert-error shadow-lg">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>加载新闻时出错: {{ error }}</span>
               </div>
             </div>
 
-            <!-- 新闻卡片2 -->
-            <div class="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow">
-              <figure class="px-4 pt-4">
-                <div class="bg-gradient-to-r from-secondary to-accent rounded-xl w-full h-64"></div>
-              </figure>
-              <div class="card-body">
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <div class="badge badge-secondary">行业动态</div>
-                  <div class="badge badge-outline">2025-10-01</div>
-                </div>
-                <h2 class="card-title">TechCorp荣获2025年度科技创新企业奖</h2>
-                <p class="text-base-content/70">
-                  在刚刚结束的2025年度科技创新大会上，TechCorp凭借在企业数字化转型领域的卓越贡献，
-                  荣获"年度科技创新企业奖"。这一荣誉是对我们持续创新和客户价值创造的高度认可。
-                </p>
-                <div class="card-actions justify-end mt-4">
-                  <router-link to="/news/detail/2" class="btn btn-secondary btn-sm rounded-full">阅读更多</router-link>
-                </div>
-              </div>
-            </div>
-
-            <!-- 新闻卡片3 -->
-            <div class="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow">
-              <figure class="px-4 pt-4">
-                <div class="bg-gradient-to-r from-accent to-neutral rounded-xl w-full h-64"></div>
-              </figure>
-              <div class="card-body">
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <div class="badge badge-accent">技术分享</div>
-                  <div class="badge badge-outline">2025-09-20</div>
-                </div>
-                <h2 class="card-title">构建安全可靠的云端协作系统：我们的实践与思考</h2>
-                <p class="text-base-content/70">
-                  在数字化办公日益普及的今天，如何确保云端协作系统的安全性和可靠性成为关键挑战。
-                  本文分享了我们在设计和实现企业级云端协作系统过程中的经验与思考。
-                </p>
-                <div class="card-actions justify-end mt-4">
-                  <router-link to="/news/detail/3" class="btn btn-accent btn-sm rounded-full">阅读更多</router-link>
+            <!-- 新闻列表 -->
+            <div v-else>
+              <div 
+                v-for="news in newsList" 
+                :key="news.id" 
+                class="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow"
+              >
+                <figure class="px-4 pt-4">
+                  <div class="bg-gradient-to-r from-primary to-secondary rounded-xl w-full h-64 flex items-center justify-center">
+                    <span class="text-white text-4xl font-bold">{{ news.title.charAt(0) }}</span>
+                  </div>
+                </figure>
+                <div class="card-body">
+                  <div class="flex flex-wrap gap-2 mb-3">
+                    <div class="badge badge-primary">新闻</div>
+                    <div class="badge badge-outline">{{ formatDate(news.created_at) }}</div>
+                  </div>
+                  <h2 class="card-title">{{ news.title }}</h2>
+                  <p class="text-base-content/70">
+                    {{ news.content.substring(0, 100) }}{{ news.content.length > 100 ? '...' : '' }}
+                  </p>
+                  <div class="card-actions justify-end mt-4">
+                    <router-link :to="`/news/detail/${news.id}`" class="btn btn-primary btn-sm rounded-full">阅读更多</router-link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- 分页 -->
-            <div class="flex justify-center mt-8">
-              <div class="join">
-                <button class="join-item btn btn-outline">1</button>
-                <button class="join-item btn btn-outline">2</button>
-                <button class="join-item btn btn-outline">3</button>
-                <button class="join-item btn btn-outline">»</button>
+              <!-- 分页 -->
+              <div class="flex justify-center mt-8" v-if="pagination.totalPages > 1">
+                <div class="join">
+                  <button 
+                    class="join-item btn btn-outline"
+                    :class="{ 'btn-active': page === pagination.page }"
+                    v-for="page in pagination.totalPages" 
+                    :key="page"
+                    @click="fetchNews(page)"
+                  >
+                    {{ page }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -123,23 +108,22 @@
             <div class="card bg-base-200 shadow">
               <div class="card-body">
                 <h2 class="card-title mb-4">热门文章</h2>
-                <ul class="space-y-4">
-                  <li>
-                    <router-link to="/news/detail/4" class="link link-hover">
-                      <div class="font-semibold">如何利用数据分析提升企业决策效率</div>
-                      <div class="text-sm text-base-content/70">2025-10-10</div>
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/news/detail/3" class="link link-hover">
-                      <div class="font-semibold">云端协作系统的安全架构设计</div>
-                      <div class="text-sm text-base-content/70">2025-09-28</div>
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/news/detail/5" class="link link-hover">
-                      <div class="font-semibold">区块链技术在供应链管理中的应用</div>
-                      <div class="text-sm text-base-content/70">2025-09-15</div>
+                <!-- 加载状态 -->
+                <div v-if="popularLoading" class="flex justify-center items-center h-20">
+                  <div class="loading loading-spinner loading-sm"></div>
+                </div>
+                
+                <!-- 错误状态 -->
+                <div v-else-if="popularError" class="text-error text-sm">
+                  加载热门文章失败
+                </div>
+                
+                <!-- 热门文章列表 -->
+                <ul v-else class="space-y-4">
+                  <li v-for="news in popularNews" :key="news.id">
+                    <router-link :to="`/news/detail/${news.id}`" class="link link-hover">
+                      <div class="font-semibold">{{ news.title }}</div>
+                      <div class="text-sm text-base-content/70">{{ formatDate(news.created_at) }}</div>
                     </router-link>
                   </li>
                 </ul>
@@ -153,6 +137,79 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+
+const newsList = ref([])
+const popularNews = ref([])
+const loading = ref(false)
+const popularLoading = ref(false)
+const error = ref(null)
+const popularError = ref(null)
+const pagination = ref({
+  page: 1,
+  limit: 10,
+  total: 0,
+  totalPages: 0
+})
+
+// 格式化日期
+const formatDate = (dateString) => {
+  if (!dateString) return '未知日期'
+  const date = new Date(dateString)
+  return isNaN(date.getTime()) ? '未知日期' : date.toLocaleDateString('zh-CN')
+}
+
+// 获取新闻列表
+const fetchNews = async (page = 1) => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+    const response = await fetch(`${apiUrl}/api/news?page=${page}&limit=10`)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    newsList.value = result.data
+    pagination.value = result.pagination
+  } catch (err) {
+    console.error('获取新闻列表失败:', err)
+    error.value = err.message || '获取新闻列表失败'
+  } finally {
+    loading.value = false
+  }
+}
+
+// 获取热门新闻
+const fetchPopularNews = async () => {
+  popularLoading.value = true
+  popularError.value = null
+  
+  try {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+    const response = await fetch(`${apiUrl}/api/news/popular`)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    popularNews.value = result.data.slice(0, 3) // 只取前3条
+  } catch (err) {
+    console.error('获取热门新闻失败:', err)
+    popularError.value = err.message || '获取热门新闻失败'
+  } finally {
+    popularLoading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchNews()
+  fetchPopularNews()
+})
 </script>
 
 <style scoped>
