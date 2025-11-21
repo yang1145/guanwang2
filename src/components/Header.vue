@@ -4,7 +4,7 @@
       <div class="flex-1">
         <router-link to="/" class="btn btn-ghost text-xl font-bold">
           <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            TechCorp
+            {{ siteConfig?.company_name || 'TechCorp' }}
           </span>
         </router-link>
       </div>
@@ -54,8 +54,19 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import ThemeToggle from './ThemeToggle.vue'
+import { fetchSiteConfig } from '@/services/siteConfig'
 
 const isScrolled = ref(false)
+const siteConfig = ref(null)
+
+// 获取网站配置信息
+const loadSiteConfig = async () => {
+  try {
+    siteConfig.value = await fetchSiteConfig()
+  } catch (error) {
+    console.error('加载网站配置失败:', error)
+  }
+}
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10
@@ -63,6 +74,7 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  loadSiteConfig()
 })
 
 onBeforeUnmount(() => {

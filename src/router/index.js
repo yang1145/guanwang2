@@ -1,24 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Products from '../views/Products.vue'
-import News from '../views/News.vue'
-import Contact from '../views/Contact.vue'
-import ProductDetail from '../views/ProductDetail.vue'
-import NewsDetail from '../views/NewsDetail.vue'
-import About from '../views/About.vue'
+import { fetchSiteConfig } from '@/services/siteConfig'
 
-// 404页面组件
-const NotFound = {
-  template: `
-    <div class="min-h-screen flex items-center justify-center bg-base-200">
-      <div class="text-center">
-        <h1 class="text-5xl font-bold mb-4">404</h1>
-        <p class="text-xl mb-8">页面未找到</p>
-        <router-link to="/" class="btn btn-primary">返回首页</router-link>
-      </div>
-    </div>
-  `
-}
+// 懒加载组件
+const Home = () => import('@/views/Home.vue')
+const Products = () => import('@/views/Products.vue')
+const ProductDetail = () => import('@/views/ProductDetail.vue')
+const News = () => import('@/views/News.vue')
+const NewsDetail = () => import('@/views/NewsDetail.vue')
+const About = () => import('@/views/About.vue')
+const Contact = () => import('@/views/Contact.vue')
+const NotFound = () => import('@/views/NotFound.vue')
 
 const routes = [
   {
@@ -26,7 +17,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: '首页 - TechCorp科技有限公司'
+      title: '首页'
     }
   },
   {
@@ -34,7 +25,7 @@ const routes = [
     name: 'Products',
     component: Products,
     meta: {
-      title: '产品中心 - TechCorp科技有限公司'
+      title: '产品中心'
     }
   },
   {
@@ -42,7 +33,7 @@ const routes = [
     name: 'ProductDetail',
     component: ProductDetail,
     meta: {
-      title: '产品详情 - TechCorp科技有限公司'
+      title: '产品详情'
     },
     props: true
   },
@@ -51,7 +42,7 @@ const routes = [
     name: 'News',
     component: News,
     meta: {
-      title: '新闻资讯 - TechCorp科技有限公司'
+      title: '新闻资讯'
     }
   },
   {
@@ -59,7 +50,7 @@ const routes = [
     name: 'NewsDetail',
     component: NewsDetail,
     meta: {
-      title: '新闻详情 - TechCorp科技有限公司'
+      title: '新闻详情'
     },
     props: true
   },
@@ -68,7 +59,7 @@ const routes = [
     name: 'About',
     component: About,
     meta: {
-      title: '关于我们 - TechCorp科技有限公司'
+      title: '关于我们'
     }
   },
   {
@@ -76,7 +67,7 @@ const routes = [
     name: 'Contact',
     component: Contact,
     meta: {
-      title: '联系我们 - TechCorp科技有限公司'
+      title: '联系我们'
     }
   },
   // 404页面路由
@@ -85,7 +76,7 @@ const routes = [
     name: 'NotFound',
     component: NotFound,
     meta: {
-      title: '页面未找到 - TechCorp科技有限公司'
+      title: '页面未找到'
     }
   }
 ]
@@ -94,26 +85,23 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // 如果有保存的位置（比如浏览器前进后退），则滚动到保存的位置
     if (savedPosition) {
       return savedPosition
+    } else {
+      return { top: 0 }
     }
-    // 如果路由有hash，滚动到对应元素
-    if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: 'smooth'
-      }
-    }
-    // 默认滚动到顶部
-    return { top: 0 }
   }
 })
 
-// 全局前置守卫 - 动态修改页面标题
-router.beforeEach((to, from, next) => {
+// 全局前置守卫
+router.beforeEach(async (to, from, next) => {
+  // 如果还没有获取过网站配置信息，则获取一次
+  const siteConfig = await fetchSiteConfig().catch(() => null)
+  const companyName = siteConfig?.company_name || 'TechCorp科技有限公司'
+  
   // 设置页面标题
-  document.title = to.meta.title || 'TechCorp科技有限公司'
+  document.title = to.meta.title ? `${to.meta.title} - ${companyName}` : companyName
+  
   next()
 })
 

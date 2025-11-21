@@ -5,11 +5,11 @@
         <div class="text-left">
           <div class="text-2xl font-bold mb-4">
             <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              TechCorp
+              {{ siteConfig?.company_name || 'TechCorp' }}
             </span>
           </div>
           <p class="mb-4">
-            引领科技创新，驱动未来变革。我们致力于为企业提供前沿的数字化解决方案。
+            {{ siteConfig?.company_description || '引领科技创新，驱动未来变革。我们致力于为企业提供前沿的数字化解决方案。' }}
           </p>
           <div class="flex space-x-4">
             <a class="cursor-pointer hover:text-primary">
@@ -63,14 +63,29 @@
       
       <div class="divider mt-10 mb-6"></div>
       
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-4 md:mb-0">
-          <p>© 2025 TechCorp 科技有限公司. 保留所有权利.</p>
+      <!-- 版权信息 -->
+      <div class="text-center mb-4">
+        <p>{{ siteConfig?.copyright_info || `© ${new Date().getFullYear()} ${siteConfig?.company_name || 'TechCorp 科技有限公司'}. 保留所有权利.` }}</p>
+      </div>
+      
+      <!-- 链接信息 -->
+      <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-4">
+        <a class="link link-hover">隐私政策</a>
+        <a class="link link-hover">服务条款</a>
+        <a class="link link-hover">网站地图</a>
+      </div>
+      
+      <!-- 备案信息 -->
+      <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-base-content/70">
+        <div v-if="siteConfig?.icp_number">
+          <a :href="'https://beian.miit.gov.cn/'" target="_blank" class="link link-hover" rel="noopener noreferrer">
+            {{ siteConfig.icp_number }}
+          </a>
         </div>
-        <div class="flex space-x-6">
-          <a class="link link-hover">隐私政策</a>
-          <a class="link link-hover">服务条款</a>
-          <a class="link link-hover">网站地图</a>
+        <div v-if="siteConfig?.police_number">
+          <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo'" target="_blank" class="link link-hover" rel="noopener noreferrer">
+            {{ siteConfig.police_number }}
+          </a>
         </div>
       </div>
     </div>
@@ -78,6 +93,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { fetchSiteConfig } from '@/services/siteConfig'
+
+const siteConfig = ref(null)
+
+// 获取网站配置信息
+const loadSiteConfig = async () => {
+  try {
+    siteConfig.value = await fetchSiteConfig()
+  } catch (error) {
+    console.error('加载网站配置失败:', error)
+  }
+}
+
+onMounted(() => {
+  loadSiteConfig()
+})
 </script>
 
 <style scoped>
